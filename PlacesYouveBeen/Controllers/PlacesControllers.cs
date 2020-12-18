@@ -4,26 +4,30 @@ using System.Collections.Generic;
 
 namespace PlacesYouveBeen.Controllers
 {
-    public class PlacesYouveBeenController : Controller
+    public class PlacesController : Controller
     {
-        [HttpGet("/placesYouveBeen")]
+        [HttpGet("/places")]
         public ActionResult Index()
         {
-            List<Parcel> allParcels = Parcel.GetAll();
-            return View(allParcels);
+            List<Place> allPlaces = Place.GetAll();
+            return View(allPlaces);
         }
 
-        [HttpGet("/placesYouveBeen/new")]
-        public ActionResult CreateForm()
-        {
-            return View();
-        }
+        [HttpGet("/places/new")]
+        public ActionResult New() { return View(); }
 
-        [HttpPost("/placesYouveBeen")]
-        public ActionResult Create(int width, int height, int depth)
+        [HttpPost("/places")]
+        public ActionResult Create(string cityName, int stayLength, string journalEntry)
         {
-            Parcel myParcel = new Parcel(width, height, depth);
+            Place myPlace = new Place(cityName, stayLength, journalEntry);
             return RedirectToAction("Index");
+        }
+
+        [HttpGet("/places/{id}")]
+        public ActionResult Show(int id)
+        {
+            Place foundPlace = Place.Find(id);
+            return View(foundPlace);
         }
     }
 }
